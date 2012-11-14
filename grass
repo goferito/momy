@@ -5,8 +5,8 @@ POSTURL="$SERVER/saveLog"
 LOGFILE="./log"
 USER="goferito"
 DEVICE="laptinux"
-CHECKTIME="5"
-#source /usr/share/momy/conf;
+CHECKTIME="300"
+#source ./conf;
 
 function lateDownTime {
     last=`tail -1 $LOGFILE | grep "SYSTEM DOWN"`;
@@ -26,7 +26,7 @@ function postLog {
         res=`wget --post-data "$log" -O - -q $POSTURL`
         if [ "$res" != "BRAVO" ]; then
             echo "Error posting.";
-            sleep 30;
+            sleep $CHECKTIME;
         fi
     done
     echo "Log sent: $log"
