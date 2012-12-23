@@ -1,7 +1,7 @@
-
-var express = require('express')
-var grass = require('./routes/grass')
-var http = require('http')
+var express = require('express');
+var grass = require('./routes/grass');
+var sessions = require('./routes/sessions');
+var http = require('http');
 var path = require('path');
 
 var app = express();
@@ -25,6 +25,8 @@ app.configure('development', function(){
 app.get('/', function(req, res){
         res.send("Welcome to Momy");
 });
+app.get('/sessions', sessions.showAll);
+
 app.post('/saveLog', grass.saveLog);
 
 http.createServer(app).listen(app.get('port'), function(){
