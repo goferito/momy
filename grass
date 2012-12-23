@@ -2,10 +2,12 @@
 
 SERVER="localhost:3000"
 POSTURL="$SERVER/saveLog"
-LOGFILE="./log"
+LOGFOLDER="/tmp"
+LOGFILE="$LOGFOLDER/momyLog"
+#LOGFILE="./log"
 USER="goferito"
 DEVICE="laptinux"
-CHECKTIME="300"
+CHECKTIME="20"
 #source ./conf;
 
 function lateDownTime {
@@ -15,6 +17,7 @@ function lateDownTime {
         mv tmp $LOGFILE;
     fi
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "SYSTEM DOWN" >> $LOGFILE;
+    echo "DownTime updated."
 }
 
 function postLog {
@@ -22,15 +25,19 @@ function postLog {
     res=0;
     while [ "$res" != "BRAVO" ]
     do
-        echo "Posting..."
-        res=`wget --post-data "$log" -O - -q $POSTURL`
+        echo "Sending log..."
+        res=`wget --post-data "user=$USER&device=$DEVICE&log=$log" -O - -q $POSTURL`
         if [ "$res" != "BRAVO" ]; then
             echo "Error posting.";
             sleep $CHECKTIME;
         fi
     done
-    echo "Log sent: $log"
+    echo "Log sent:"
+    echo -e $log
     #log should now be deleted, except for the lines with current session.
+    cat $LOGFILE | tail -2 > tmpLog;
+    mv tmpLog $LOGFILE
+    echo "Log purged."
 }
 
 if [ "$1" = "stop" ];
