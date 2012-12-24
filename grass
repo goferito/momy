@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVER="localhost:3000"
+SERVER="localhost:4532"
 POSTURL="$SERVER/saveLog"
 LOGFOLDER="/tmp"
 LOGFILE="$LOGFOLDER/momyLog"
