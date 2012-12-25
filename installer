@@ -1,5 +1,4 @@
 #!/bin/bash
-MOMYDIR="/usr/share/momy"
 
 #root permission is required
 if [ `whoami` != "root" ]
@@ -8,8 +7,13 @@ then
     exit;
 fi
 
+MOMYDIR="/usr/share/momy"
+
 #create folders
 mkdir $MOMYDIR
+
+#Be sure grass has execution permission
+chmod +x grass
 
 #move files to momy directory
 cp grass $MOMYDIR
