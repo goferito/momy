@@ -8,8 +8,4 @@ var Session= new mongoose.Schema({
                                 });
 
 mongoose.model('Session', Session);
-/*
-var Session = mongoose.model('Session');
-
-exports.model = Session;
-*/
+exports.model = mongoose.model('Session');
