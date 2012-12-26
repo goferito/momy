@@ -1,10 +1,15 @@
 var express = require('express');
-var grass = require('./routes/grass');
-var sessions = require('./routes/sessions');
 var http = require('http');
 var path = require('path');
+var mongoose = require('mongoose');
+var config = require('./config');
+
+var grass = require('./routes/grass');
+var sessions = require('./routes/sessions');
+var users = require('./routes/users');
 
 var app = express();
+var db = mongoose.connect(config.mongo.host);
 
 app.configure(function(){
   app.set('port', process.env.PORT || 4532);
@@ -13,7 +18,16 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
+  app.use(express.cookieParser('very secret: blabla'));
+  app.use(express.session());
   app.use(express.methodOverride());
+  app.use(function(req,res,next){
+    if(req.session.err) res.locals.err = req.session.err;
+    if(req.session.msg) res.locals.msg = req.session.msg;
+    delete req.session.err;
+    delete req.session.msg;
+    next();
+  });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
@@ -22,12 +36,18 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', function(req, res){
-        res.send("Welcome to Momy");
-});
-app.get('/sessions', sessions.showAll);
 
 app.post('/saveLog', grass.saveLog);
+
+app.get('/logout', users.logout);
+app.get('/login', users.loginForm);
+app.post('/login', users.authenticate);
+
+/* Restricted to user */
+app.get('/', users.restrict, users.showDashboard);
+app.get('/dashboard', users.restrict, users.showDashboard);
+app.get('/sessions', users.restrict, sessions.showAll);
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
