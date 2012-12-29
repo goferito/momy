@@ -14,7 +14,7 @@ exports.model = mongoose.model('Session');
 
 exports.getAll = function(user, callback) {
     Session.find({user: user})
-            .sort('up')
+            .sort('-up')
             .select('ip device up down')
             .exec(function(err, data){
                 if(err) console.log(err);

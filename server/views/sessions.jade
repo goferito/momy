@@ -1,4 +1,10 @@
 extends page
 block content
   h1 Sessions Statistics
-  p #{sessions}
+  - each session in sessions
+    p 
+      | #{session.device}@#{session.ip}
+      br/
+      | #{session.up}
+      br/
+      | #{session.down} (#{session.secs} secs.)
