@@ -1,6 +1,7 @@
 var User = require('../model/user').model;
 
 exports.showDashboard = function  (req,res) {
+    res.locals.menu = 'dashboard';
     res.render('dashboard');
 };
 

@@ -1,8 +1,5 @@
-h1 This is your dashboard
-p It's empty, just give me time
-p You can 
-  a(href='/logout') logout
-  |  now but, please, come back later.
-p You can check the 
-  a(href='/sessions') sessions
-  |  saved.
+extends page
+block content
+  h1 Dashboard
+  include messages
+  p I know it's empty. Just give me time.

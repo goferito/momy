@@ -1,15 +1,10 @@
 extends layout
-block content
+block body
   .container
     form.formLogin(method='post')
 
       h3 Please, log in:
-      - if(locals.msg)
-        p.alert.alert-success #{msg}
-      - if(locals.err)
-        p.alert.alert-error 
-          strong Error! 
-          | #{err}
+      include messages
 
       input.input-block-level(type='text', name='user', placeholder='User Name')
       br/
