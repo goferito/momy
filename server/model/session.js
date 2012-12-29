@@ -7,5 +7,17 @@ var Session= new mongoose.Schema({
                                     ip: String
                                 });
 
-mongoose.model('Session', Session);
+var Session = mongoose.model('Session', Session);
+
 exports.model = mongoose.model('Session');
+
+
+exports.getAll = function(user, callback) {
+    Session.find({user: user})
+            .sort('up')
+            .select('ip device up down')
+            .exec(function(err, data){
+                if(err) console.log(err);
+                callback(err, data);
+            });
+}
