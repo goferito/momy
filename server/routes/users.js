@@ -20,7 +20,7 @@ exports.authenticate = function(req, res){
             });
         }else{
             console.log("Bad authentication");
-            req.session.err = "Bad credentials";
+            req.session.err = "Erroneous credentials.";
             res.redirect("login");
         }
     });
