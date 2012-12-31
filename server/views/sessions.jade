@@ -1,10 +1,21 @@
 extends page
 block content
   h1 Session Statistics
-  - each session in sessions
-    p 
-      | #{session.device}@#{session.ip}
-      br/
-      | #{session.up}
-      br/
-      | #{session.down} (#{session.secs} secs.)
+  .row
+    #sessionList.pull-left 
+      - each session in sessions
+        p
+          | #{session.device}@#{session.ip}
+          br/
+          | #{session.up}
+          br/
+          | #{session.down} (#{session.secs} secs.)
+    p.pull-right Total Seconds
+        br/
+        | #{totalSecs}
+    p.pull-right Week Totals
+        br/
+        | #{weekTotals}
+    p.pull-right Day Totals
+        br/
+        | #{dayTotals}
