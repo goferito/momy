@@ -25,10 +25,10 @@ exports.showAll = function(req, res){
         dayTotals[up.getDay()+1/1] += sessionSecs+0;
         //+1 to make it start from monday instead sunday
 
-        res.locals.totalSecs = totalSecs;
+        res.locals.totalSecs = humanizeTime(totalSecs);
         res.locals.weekTotals = weekTotals;
         res.locals.dayTotals = dayTotals;
-        res.locals.sessions[i].secs = sessionSecs;
+        res.locals.sessions[i].time = humanizeTime(sessionSecs);
 
     }
     res.render('sessions');
@@ -41,3 +41,10 @@ exports.loadAll = function(req,res,next) {
     });
 }
 
+function humanizeTime (secs) {
+    if(secs < 60) return secs+' secs.';
+    var min = Math.round((secs / 60), 0);
+    if(min < 60) return min + ' mins';
+    var hour = Math.round((min / 60), 0);
+    return hour + ' hours';
+}
