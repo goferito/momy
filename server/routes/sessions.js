@@ -15,23 +15,15 @@ exports.showAll = function(req, res){
     for(var j=0;j<7;j++) dayTotals[j]=0;   //  7 days per week
     for(i in res.locals.sessions){
         session = res.locals.sessions[i];
-        console.log(session);
 
         var up = new Date(session.up.substring(1,20));
         var down = new Date(session.down.substring(1,20));
 
-        /*
-        console.log("week:" + up.getWeek());
-        console.log("day:" + up.getDay());
-        console.log(up);
-        console.log(down);
-        console.log((down.getTime() - up.getTime())/1000);
-        */
-
         var sessionSecs = (down.getTime() - up.getTime())/1000;
         totalSecs += sessionSecs;
         weekTotals[up.getWeek()] += sessionSecs+0;
-        dayTotals[up.getDay()] += sessionSecs+0;
+        dayTotals[up.getDay()+1/1] += sessionSecs+0;
+        //+1 to make it start from monday instead sunday
 
         res.locals.totalSecs = totalSecs;
         res.locals.weekTotals = weekTotals;
@@ -39,10 +31,6 @@ exports.showAll = function(req, res){
         res.locals.sessions[i].secs = sessionSecs;
 
     }
-    console.log(weekTotals);
-    console.log(dayTotals);
-    console.log(res.locals.sessions.length);
-    console.log(new Date());
     res.render('sessions');
 };
 

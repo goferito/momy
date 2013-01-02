@@ -40,7 +40,6 @@ block content
     var dayTotals = [#{dayTotals}];
     var maxDay = Math.max(#{dayTotals});
     var weekDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-    var i = 0;
     console.log(maxDay);
     //var dayTotals = [23,8,48,4,32,12,23];
     var chart = d3.select('#dayTotals').append('div').attr('class', 'chart');
@@ -49,6 +48,6 @@ block content
         .data(dayTotals)
         .enter().append('div')
         .style("width", function(d){ return (d / maxDay * 300) + "px";})
-        .text(function(d){return weekDays[i++] + '(' + d + ')';});
+        .text(function(d,i){return weekDays[i] + '(' + d + ')';});
       /*
         */
