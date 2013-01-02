@@ -46,5 +46,7 @@ function humanizeTime (secs) {
     var min = Math.round((secs / 60), 0);
     if(min < 60) return min + ' mins';
     var hour = Math.round((min / 60), 0);
-    return hour + ' hours';
+    min = min % 60;
+    if(min == 0) return hour + ' hours';
+    return hour + ' hours, ' + min + ' mins';
 }
