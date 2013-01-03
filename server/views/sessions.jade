@@ -19,8 +19,10 @@ block content
         b Day Totals:
         br/
         | #{dayTotals}
-    p#dayTotals.pull-right.well
+
+    p#svg.pull-right.well
        b Day totals: 
+       br/
 
     p.pull-right.well
         b Week Totals:
@@ -28,26 +30,87 @@ block content
         | #{weekTotals}
 
   style
-    .chart div{
+    .chart2{
+      margin: 5px;
       font: 10px sans-serif;
-      background-color: steelblue;
-      text-align: right;
-      padding: 3px;
-      margin: 1px;
-      color: white;
     }
+    .chart2 rect{
+      stroke: whiteSmoke;
+      fill: goldenrod;
+    }
+
   script
+    function humanizeTime (secs) {
+        if(secs < 60) return secs+' secs.';
+        var min = Math.round((secs / 60), 0);
+        if(min < 60) return min + ' mins';
+        var hour = Math.round((min / 60), 0);
+        min = min % 60;
+        if(min == 0) return hour + ' hours';
+        return hour + ' hours, ' + min + ' mins';
+    }
     var dayTotals = [#{dayTotals}];
     var maxDay = Math.max(#{dayTotals});
     var weekDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
     console.log(maxDay);
-    //var dayTotals = [23,8,48,4,32,12,23];
-    var chart = d3.select('#dayTotals').append('div').attr('class', 'chart');
-    console.log(dayTotals);
-    chart.selectAll("div")
+
+    var labelsWidth = 65;
+    var chart,
+        width = 500,
+        bar_height = 20,
+        margins = 2,
+        height = (bar_height+margins) * dayTotals.length;
+
+    var x = d3.scale.linear()
+                .domain([0, d3.max(dayTotals)])
+                .range([0, width - labelsWidth]);
+    var y = d3.scale.ordinal()
+                .domain(dayTotals)
+                .rangeBands([0, height]);
+
+    chart = d3.select("#svg")
+              .append('svg')
+              .attr('class', 'chart2')
+              .attr('width', width)
+              .attr('height', height);
+
+    chart.selectAll("rect")
         .data(dayTotals)
-        .enter().append('div')
-        .style("width", function(d){ return (d / maxDay * 300) + "px";})
-        .text(function(d,i){return weekDays[i] + '(' + d + ')';});
-      /*
-        */
+        .enter().append("rect")
+        .attr("y", y)
+        .attr("height", y.rangeBand())
+        .attr("x", function(){ return labelsWidth;})
+        .transition()
+        .duration(1000)
+            .attr("width", x);
+
+    chart.selectAll("text.day")
+        .data(dayTotals).enter().append("text")
+        .attr("x", function(d){ return labelsWidth - 5; })
+        .attr("y", function(d){ return y(d)+y.rangeBand()/2;})
+        .attr("dy", ".36em")
+        .attr("text-anchor", "end")
+        .attr('fill', 'dimgray')
+        .text(function(d,i){ return weekDays[i]; });
+
+    chart.selectAll("text.time")
+        .data(dayTotals)
+        .enter().append("text")
+        .attr('opacity', 0)
+        .attr("x", function(d){ 
+            if(x(d) < 100)
+                return x(d) + labelsWidth + 5;
+            else
+                return x(d) + labelsWidth - 5;})
+        .attr("y", function(d){ return y(d)+y.rangeBand()/2;})
+        .attr("dy", ".36em")
+        .attr("text-anchor", function(d){
+            if(x(d) < 100)
+                return "begining";
+            else 
+                return "end";})
+        .text(function(d,i){ return '(' + humanizeTime(d) + ')';})
+        .transition()
+        .duration(700)
+        .delay(600)
+            .attr('opacity', 1);

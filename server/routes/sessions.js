@@ -22,8 +22,8 @@ exports.showAll = function(req, res){
         var sessionSecs = (down.getTime() - up.getTime())/1000;
         totalSecs += sessionSecs;
         weekTotals[up.getWeek()] += sessionSecs+0;
-        dayTotals[up.getDay()+1/1] += sessionSecs+0;
-        //+1 to make it start from monday instead sunday
+        dayTotals[(up.getDay()+6)%7] += sessionSecs+0;
+        //+6%7 to make weeks start on monday
 
         res.locals.totalSecs = humanizeTime(totalSecs);
         res.locals.weekTotals = weekTotals;
