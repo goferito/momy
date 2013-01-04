@@ -25,10 +25,9 @@ block content
         b Devices usage:
         br/
 
-    p.pull-right.well
-        b Week Totals:
+    p#hotTimes.pull-right.well
+        b Hot Times:
         br/
-        | #{weekTotals}
 
   style
     .chart2{
@@ -41,6 +40,8 @@ block content
     }
 
   script
+
+    /* Pie chart */
     var w = 200,
         h = 200,
         r = 100,
@@ -162,3 +163,79 @@ block content
         .duration(700)
         .delay(600)
             .attr('opacity', 1);
+
+    /* HOT TIMES */
+    var dayWidth = 80;
+    var hourWidth = 50;
+    var timeHeight = 10;
+    var headerHeight = 20;
+    var width = (dayWidth+1)*7 + hourWidth+1;
+    var height = 600;
+
+    var hotData = [!{hotTimes}];
+    console.log(hotData);
+
+    var hotChart = d3.select("#hotTimes")
+                      .append('svg')
+                      .attr('class', 'chart3')
+                      .attr('width', width)
+                      .attr('height', height);
+    var hours = [];
+    for(var a=0; a<24; a++)
+      hours.push(a+':00');
+
+    hotChart.selectAll("hours.space")
+            .data(hours)
+            .enter()
+            .append("rect")
+            .attr("x", function(){ return 0;})
+            .attr("y", function(d,i){ return headerHeight+1 + i*(headerHeight+2);})
+            .attr("height", function(){ return headerHeight+1; })
+            .attr("width", function(){ return hourWidth; })
+            .attr('fill', function(){ return 'goldenrod'; });
+    hotChart.selectAll("hours.name")
+            .data(hours)
+            .enter()
+            .append("text")
+            .attr("x", function(){ return hourWidth/2;})
+            .attr("y", function(d,i){ return headerHeight*1.5 + i*(headerHeight+2);})
+            .attr("fill", function(){return 'dimgray';})
+            .attr("text-anchor", "middle")                 
+            .attr("dy", ".50em")
+            .text(function(d){ return d; });
+
+    hotChart.selectAll("dayName")
+            .data(hotData[0])
+            .enter()
+            .append("rect")
+            .attr("x", function(d,i){return hourWidth + i*(dayWidth+1);})
+            .attr("y", function(){return 0;})
+            .attr("height", function(){return headerHeight;})
+            .attr("width", function(){return dayWidth;})
+            .attr("fill", function(){return 'goldenrod';});
+    hotChart.selectAll("text.dayName")
+            .data(hotData[0])
+            .enter()
+            .append("text")
+            .attr("x", function(d,i){return hourWidth + i*(dayWidth+1)+dayWidth/2;})
+            .attr("y", function(){return headerHeight/2;})
+            .attr("fill", function(){return 'dimgray';})
+            .attr("text-anchor", "middle")                 
+            .attr("dy", ".36em")
+            .text(function(d,i){ return weekDays[i]; });
+
+    for(h in hotData[0]){
+        hotChart.selectAll("rect"+h)
+            .data(hotData[0][h])
+            .enter()
+            .append("rect")
+            .attr("y", function(d,i){ return headerHeight+1 + i*(timeHeight+1);})
+            .attr("height", function(){ return timeHeight; })
+            .attr("x", function(){ return hourWidth + h*(dayWidth+1);})
+            .attr("width", function(){ return dayWidth; })
+            .attr('fill', function(d){ return color(d); });
+    }
+
+
+
+
