@@ -11,6 +11,7 @@ exports.showAll = function(req, res){
     var totalSecs = 0;
     var weekTotals = [];
     var dayTotals = [];
+    var devices = [];
     for(var j=0;j<52;j++) weekTotals[j]=0; // 52 weeks every year
     for(var j=0;j<7;j++) dayTotals[j]=0;   //  7 days per week
     for(i in res.locals.sessions){
@@ -25,12 +26,27 @@ exports.showAll = function(req, res){
         dayTotals[(up.getDay()+6)%7] += sessionSecs+0;
         //+6%7 to make weeks start on monday
 
-        res.locals.totalSecs = humanizeTime(totalSecs);
-        res.locals.weekTotals = weekTotals;
-        res.locals.dayTotals = dayTotals;
+        if(devices[session.device])
+            devices[session.device] += sessionSecs;
+        else
+            devices[session.device] = sessionSecs;
+
+
         res.locals.sessions[i].time = humanizeTime(sessionSecs);
 
     }
+
+    var devs = [];
+    for(a in devices){
+        var percent = Math.round(devices[a]/totalSecs*100);
+        devs.push({'label': a + ' (' + percent + '%)',
+                    'value': percent });
+    }
+    res.locals.devices = devs;
+    res.locals.totalSecs = humanizeTime(totalSecs);
+    res.locals.weekTotals = weekTotals;
+    res.locals.dayTotals = dayTotals;
+
     res.render('sessions');
 };
 

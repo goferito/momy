@@ -11,18 +11,19 @@ block content
           | #{session.up}
           br/
           | #{session.down} (#{session.time})
+
+    p#dayTotals.pull-right.well
+       b Day totals: 
+       br/
+
     p.pull-right.well 
         b Total Time:
         br/
         | #{totalSecs}
-    p.pull-right.well
-        b Day Totals:
-        br/
-        | #{dayTotals}
 
-    p#svg.pull-right.well
-       b Day totals: 
-       br/
+    p#pie.pull-right.well
+        b Devices usage:
+        br/
 
     p.pull-right.well
         b Week Totals:
@@ -40,15 +41,62 @@ block content
     }
 
   script
+    var w = 200,
+        h = 200,
+        r = 100,
+        color = d3.scale.category20c();     //builtin range of colors
+                 
+        data = !{JSON.stringify(devices)};
+                                                    
+    var vis = d3.select("#pie")
+                .append("svg:svg")
+                .data([data])
+                    .attr("width", w)           
+                    .attr("height", h)
+                    .append("svg:g")                //make a group to hold our pie chart
+                    .attr("transform", "translate(" + r + "," + r + ")")    
+                     
+    var arc = d3.svg.arc()
+            .outerRadius(r);
+             
+    var pie = d3.layout.pie()          
+                .value(function(d) { return d.value; });
+             
+    var arcs = vis.selectAll("g.slice")   
+                .data(pie)                   
+                .enter()            
+                .append("svg:g")   
+                .attr("class", "slice");
+                                                                 
+    arcs.append("svg:path")
+        .attr("fill", function(d, i) { return color(i); } ) 
+        .attr("d", arc);                                   
+
+    arcs.append("svg:text")                           
+        .transition()
+        .duration(500)
+        .attr("transform", function(d) {                 
+                    //we have to make sure to set these before calling arc.centroid
+                    d.innerRadius = 0;
+                    d.outerRadius = r;
+                    return "translate(" + arc.centroid(d) + ")";    
+                })
+        .attr("text-anchor", "middle")                 
+        .text(function(d, i) { return data[i].label; });
+
+
+    /* bar graph */
+
     function humanizeTime (secs) {
-        if(secs < 60) return secs+' secs.';
-        var min = Math.round((secs / 60), 0);
-        if(min < 60) return min + ' mins';
-        var hour = Math.round((min / 60), 0);
-        min = min % 60;
-        if(min == 0) return hour + ' hours';
-        return hour + ' hours, ' + min + ' mins';
+      if(secs < 60) return secs+' secs.';
+      var min = Math.round((secs / 60), 0);
+      if(min < 60) return min + ' mins';
+      var hour = Math.round((min / 60), 0);
+      min = min % 60;
+      if(min == 0) return hour + ' hours';
+      return hour + ' hours, ' + min + ' mins';
     }
+    
     var dayTotals = [#{dayTotals}];
     var maxDay = Math.max(#{dayTotals});
     var weekDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -56,7 +104,7 @@ block content
 
     var labelsWidth = 65;
     var chart,
-        width = 500,
+        width = 400,
         bar_height = 20,
         margins = 2,
         height = (bar_height+margins) * dayTotals.length;
@@ -68,7 +116,7 @@ block content
                 .domain(dayTotals)
                 .rangeBands([0, height]);
 
-    chart = d3.select("#svg")
+    chart = d3.select("#dayTotals")
               .append('svg')
               .attr('class', 'chart2')
               .attr('width', width)
