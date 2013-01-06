@@ -2,10 +2,9 @@
 
 SERVER="localhost:4532"
 POSTURL="$SERVER/saveLog"
-LOGFOLDER="/tmp"
-LOGFILE="$LOGFOLDER/momyLog"
-GRASSFOLDER="/usr/share/momy"
-GRASSLOG="$GRASSFOLDER/log"
+LOGFOLDER="."
+LOGFILE="$LOGFOLDER/sessionLog"
+GRASSLOG="$LOGFOLDER/log"
 USER="goferito"
 DEVICE="laptinux"
 CHECKTIME="20"
