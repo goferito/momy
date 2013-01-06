@@ -38,6 +38,10 @@ block content
       stroke: whiteSmoke;
       fill: goldenrod;
     }
+    .chart{
+      font: 10px sans-serif;
+    }
+
 
   script
 
@@ -51,6 +55,7 @@ block content
                                                     
     var vis = d3.select("#pie")
                 .append("svg:svg")
+                .attr('class', 'chart')
                 .data([data])
                     .attr("width", w)           
                     .attr("height", h)
@@ -165,8 +170,8 @@ block content
             .attr('opacity', 1);
 
     /* HOT TIMES */
-    var dayWidth = 80;
-    var hourWidth = 50;
+    var dayWidth = 70;
+    var hourWidth = 40;
     var timeHeight = 10;
     var headerHeight = 20;
     var width = (dayWidth+1)*7 + hourWidth+1;
@@ -177,7 +182,7 @@ block content
 
     var hotChart = d3.select("#hotTimes")
                       .append('svg')
-                      .attr('class', 'chart3')
+                      .attr('class', 'chart')
                       .attr('width', width)
                       .attr('height', height);
     var hours = [];
@@ -192,7 +197,7 @@ block content
             .attr("y", function(d,i){ return headerHeight+1 + i*(headerHeight+2);})
             .attr("height", function(){ return headerHeight+1; })
             .attr("width", function(){ return hourWidth; })
-            .attr('fill', function(){ return 'goldenrod'; });
+            .attr('fill', function(){ return '#ddd'; });
     hotChart.selectAll("hours.name")
             .data(hours)
             .enter()
@@ -212,7 +217,7 @@ block content
             .attr("y", function(){return 0;})
             .attr("height", function(){return headerHeight;})
             .attr("width", function(){return dayWidth;})
-            .attr("fill", function(){return 'goldenrod';});
+            .attr("fill", function(){return '#ddd';});
     hotChart.selectAll("text.dayName")
             .data(hotData[0])
             .enter()
@@ -233,6 +238,9 @@ block content
             .attr("height", function(){ return timeHeight; })
             .attr("x", function(){ return hourWidth + h*(dayWidth+1);})
             .attr("width", function(){ return dayWidth; })
+            .attr('fill', function(){ return '#ddd'; })
+            .transition()
+            .duration(2000)
             .attr('fill', function(d){ return color(d); });
     }
 
