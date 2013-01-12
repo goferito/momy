@@ -1,14 +1,32 @@
 #!/bin/bash
 
-SERVER="localhost:4532"
-POSTURL="$SERVER/saveLog"
-LOGFOLDER="."
-LOGFILE="$LOGFOLDER/sessionLog"
-GRASSLOG="$LOGFOLDER/log"
-USER="goferito"
-DEVICE="laptinux"
-CHECKTIME="20"
-#source ./conf;
+source ./conf;
+
+function updateIdle {
+    last=`tail -1 $ACTIVELOG | grep "IDLE"`;
+    if [ -n "$last" ]; then
+        sed '$d' < $ACTIVELOG > "$LOGFOLDER/tmpidle";
+        mv "$LOGFOLDER/tmpidle" $ACTIVELOG;
+    fi
+    echo `date +[%Y-%m-%d\ %H:%M:%S]` "IDLE" >> $ACTIVELOG;
+}
+
+function updateActiveLog {
+    idle=`xprintidle`
+    if [ "$idle" -lt "$IDLETIME" ]
+    then
+        if $isIdle
+        then
+            echo `date +[%Y-%m-%d\ %H:%M:%S]` "ACTIVE" >> $ACTIVELOG;
+            updateIdle;
+        else
+            updateIdle;
+        fi
+        isIdle=false
+    else
+        isIdle=true
+    fi
+}
 
 function lateDownTime {
     last=`tail -1 $LOGFILE | grep "SYSTEM DOWN"`;
@@ -23,18 +41,36 @@ function lateDownTime {
 function postLog {
     log=`cat $LOGFILE`;
     res=0;
-    echo "Sending log..."
-    res=`wget --post-data "user=$USER&device=$DEVICE&log=$log" -O - -q $POSTURL`
+    echo "Sending sessions log..."
+    res=`wget --post-data "user=$USER&device=$DEVICE&log=$log" -O - -q $POSTSESSIONURL`
     if [ "$res" != "BRAVO" ]; then
         echo "Error posting.";
-        echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING" >> $GRASSLOG;
+        echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING SESSION LOG" >> $GRASSLOG;
     else
         echo "Log sent:"
         echo -e $log
         #log should now be deleted, except for the lines with current session.
         cat $LOGFILE | tail -2 > "$LOGFOLDER/tmpMomyLog";
         mv "$LOGFOLDER/tmpMomyLog" $LOGFILE
-        echo "Log purged."
+        echo "Session Log purged."
+    fi
+}
+
+function postActiveLog {
+    log=`cat $ACTIVELOG`;
+    res=0;
+    echo "Sending active log..."
+    res=`wget --post-data "user=$USER&device=$DEVICE&log=$log" -O - -q $POSTACTIVEURL`
+    if [ "$res" != "BENNE" ]; then
+        echo "Error posting.";
+        echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING ACTIVE LOG" >> $GRASSLOG;
+    else
+        echo "Log sent:"
+        echo -e $log
+        #log should now be deleted, except for the two last lines
+        cat $ACTIVELOG | tail -2 > "$LOGFOLDER/tmpActiveLog";
+        mv "$LOGFOLDER/tmpMomyLog" $ACTIVELOG
+        echo "Active Log purged."
     fi
 }
 
@@ -53,6 +89,7 @@ then
     while true
     do
         lateDownTime;
+        updateActiveLog;
         postLog;
         sleep $CHECKTIME;
     done
