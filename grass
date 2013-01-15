@@ -77,6 +77,7 @@ function postActiveLog {
 if [ "$1" = "stop" ];
 then
         lateDownTime;
+        updateActiveLog;
         exit;
 fi
 
@@ -84,6 +85,8 @@ if [ "$1" = "start" ];
 then
 	#Save the access in the log
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "SYSTEM UP" >> $LOGFILE;
+
+    export DISPLAY=:0.0
 
     #Keep notifing the system is up every CHECKTIME
     while true
