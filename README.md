@@ -14,7 +14,8 @@ written in jade. In the front-end some charts are created with D3.js.
 ###Client
 * Bash
 * xprintidle; installed running the installation script.
-*Only tested for Ubuntu*
+
+*Client only tested for Ubuntu*
 
 ###Node server:
 * [Express](http://expressjs.com/)
