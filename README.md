@@ -26,8 +26,11 @@ written in jade. In the front-end some charts are created with D3.js.
 ##INSTALLATION
 
 Clone the respository. 
+
 Change the configuration file. (/conf)
+
 Execute the installation script. (/installer)
+
 
 For the server, you can try it in your localhost starting it with:
 
