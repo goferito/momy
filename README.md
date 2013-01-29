@@ -29,7 +29,7 @@ written in jade. In the front-end some charts are created with D3.js.
 
 Clone the respository. 
 
-Change the configuration file. (/conf)
+Copy or rename the conf.default file to conf, and change it to set your configuration.
 
 Execute the installation script. (/installer)
 

@@ -1,0 +1,20 @@
+
+SERVER="localhost:4532"
+POSTSESSIONURL="$SERVER/saveLog"
+POSTACTIVEURL="$SERVER/saveActiveLog"
+
+LOGFOLDER="/tmp" #make sure this foler really exists
+LOGFILE="$LOGFOLDER/sessionLog"
+ACTIVELOG="$LOGFOLDER/activeLog"
+GRASSLOG="$LOGFOLDER/log"
+
+# Username who has this client installed
+USER="picapiedra"
+# Name of the device with this client installed
+DEVICE="laptop"
+
+# Number of seconds the client will wait until refress the log and send
+# it to the server
+CHECKTIME="900"
+# Number of milliseconds to consider that the user is idle
+IDLETIME="5000" 

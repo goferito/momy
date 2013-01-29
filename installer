@@ -7,6 +7,8 @@ then
     exit;
 fi
 
+#TODO Make sure the conf file has been created from conf.default
+
 MOMYDIR="/usr/share/momy"
 
 #create folders
@@ -21,3 +23,6 @@ cp grass $MOMYDIR
 #set the process into the start up
 ln $MOMYDIR/grass /etc/init.d/grass
 update-rc.d grass defaults
+
+#install tools
+apt-get -y install xprintidle
