@@ -40,3 +40,12 @@ For the server, you can try it in your localhost starting it with:
 
 MongoDB is required to run the server.
 
+
+##Future
+The clients only works on linux and it's only tested on ubuntu. For the very future,
+client versions for windows or macOS could be developed.
+
+The most immediate features i'm trying to develop are listed in the TODO file.
+
+
+
