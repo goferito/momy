@@ -1,0 +1,19 @@
+TODO:
+- DASHBOARD
+  * % of time of my life I spend in front of computers
+  * % of each device
+ 
+ - if i have 2 devices running... what?
+ - show screenshots on github
+
+ - for future versions may be an admin who can see everything. dont waste time with this now.
+
+
+ - NEW DATA
+   * Network analysis.
+   * Opened connections
+   * Running processes
+
+   * Opened windows titles (and guess visited sites and so on)
+
+ - Update.sh script, to get running easily the last version of the client.
