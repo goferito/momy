@@ -34,9 +34,11 @@ Copy or rename the conf.default file to conf, and change it to set your configur
 Execute the installation script. (/installer)
 
 
-For the server, you can try it in your localhost starting it with:
+For the server, you first need to install the node modules required: 
 
-    node ./server/app.js
+    cd server
+    npm install
+    node ./app.js
 
 MongoDB is required to run the server.
 

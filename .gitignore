@@ -1,2 +1,8 @@
 server/node_modules/
 conf
+
+activeLog
+idi
+log
+runservers.sh
+sessionLog
