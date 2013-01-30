@@ -91,9 +91,11 @@ then
     #Keep notifing the system is up every CHECKTIME
     while true
     do
+        echo '------------------';
         lateDownTime;
         updateActiveLog;
         postLog;
+        postActiveLog;
         sleep $CHECKTIME;
     done
 fi
