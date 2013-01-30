@@ -2,7 +2,8 @@ server/node_modules/
 conf
 
 activeLog
-idi
-log
-runservers.sh
+grassLog
 sessionLog
+
+runservers.sh
+idi
