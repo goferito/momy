@@ -3,12 +3,12 @@
 source ./conf;
 
 function updateIdle {
-    last=`tail -1 $ACTIVELOG | grep "IDLE"`;
+    last=`tail -1 $ACTIVELOG | grep "DOWN"`;
     if [ -n "$last" ]; then
         sed '$d' < $ACTIVELOG > "$LOGFOLDER/tmpidle";
         mv "$LOGFOLDER/tmpidle" $ACTIVELOG;
     fi
-    echo `date +[%Y-%m-%d\ %H:%M:%S]` "IDLE" >> $ACTIVELOG;
+    echo `date +[%Y-%m-%d\ %H:%M:%S]` "DOWN" >> $ACTIVELOG;
 }
 
 function updateActiveLog {
@@ -17,7 +17,7 @@ function updateActiveLog {
     then
         if $isIdle
         then
-            echo `date +[%Y-%m-%d\ %H:%M:%S]` "ACTIVE" >> $ACTIVELOG;
+            echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $ACTIVELOG;
             updateIdle;
         else
             updateIdle;
@@ -29,12 +29,12 @@ function updateActiveLog {
 }
 
 function lateDownTime {
-    last=`tail -1 $LOGFILE | grep "SYSTEM DOWN"`;
+    last=`tail -1 $LOGFILE | grep "DOWN"`;
     if [ -n "$last" ]; then
         sed '$d' < $LOGFILE > "$LOGFOLDER/tmpmomy";
         mv "$LOGFOLDER/tmpmomy" $LOGFILE;
     fi
-    echo `date +[%Y-%m-%d\ %H:%M:%S]` "SYSTEM DOWN" >> $LOGFILE;
+    echo `date +[%Y-%m-%d\ %H:%M:%S]` "DOWN" >> $LOGFILE;
     echo "DownTime updated."
 }
 
@@ -84,7 +84,7 @@ fi
 if [ "$1" = "start" ];
 then
 	#Save the access in the log
-    echo `date +[%Y-%m-%d\ %H:%M:%S]` "SYSTEM UP" >> $LOGFILE;
+    echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $LOGFILE;
 
     export DISPLAY=:0.0
 
