@@ -32,13 +32,8 @@ exports.showAll = function(req, res){
 
         res.locals.sessions[i].time = humanizeTime(sessionSecs);
 
-        console.log(session);
         var timeUp = up.getHours()*2 + Math.round(up.getMinutes()/30);
         var timeDown = down.getHours()*2 + Math.round(down.getMinutes()/30);
-        console.log('weekDayUp:'+weekDayUp);
-        console.log('weekDayDown:'+weekDayDown);
-        console.log('timeUp:'+timeUp);
-        console.log('timeDown:'+timeDown);
         for(var w = weekDayUp; w <= weekDayDown; w++){
             if(w != weekDayUp) var h = 0;
             else var h = timeUp;
@@ -53,7 +48,6 @@ exports.showAll = function(req, res){
 
     }
     res.locals.hotTimes = JSON.stringify(hotTimes);
-    console.log(JSON.stringify(hotTimes));
     res.locals.devices = [];
     for(a in devices){
         var percent = Math.round(devices[a]/totalSecs*100);

@@ -1,0 +1,14 @@
+extends page
+block content
+  h2 Active / Idle Time Statistics
+  .row
+    #activeList.pull-left.well
+      b Active List:
+      - each active in actives
+        p
+          | #{active.device}@#{active.ip}
+          br/
+          | #{active.up}
+          br/
+          | #{active.down} (#{active.time})
+

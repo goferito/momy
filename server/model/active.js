@@ -1,5 +1,5 @@
 var mongoose = require("mongoose");
-var SessionSchema = new mongoose.Schema({
+var ActiveSchema = new mongoose.Schema({
                                             user: String,
                                             device: String,
                                             up: String,
@@ -7,17 +7,17 @@ var SessionSchema = new mongoose.Schema({
                                             ip: String
                                         });
 
-var Session = mongoose.model('Session', SessionSchema);
+var Active = mongoose.model('Active', ActiveSchema);
 
-exports.model = mongoose.model('Session');
+exports.model = mongoose.model('Active');
 
 
 exports.getAll = function(user, callback) {
-    Session.find({user: user})
+    Active.find({user: user})
             .sort('-up')
             .select('ip device up down')
             .exec(function(err, data){
-                if(err) console.log(err);
+                if(err) console.error(err);
                 callback(err, data);
             });
-};
+}

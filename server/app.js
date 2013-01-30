@@ -7,6 +7,7 @@ var config = require('./config');
 
 var grass = require('./routes/grass');
 var sessions = require('./routes/sessions');
+var actives = require('./routes/actives');
 var users = require('./routes/users');
 
 var app = express();
@@ -44,6 +45,7 @@ app.configure('development', function(){
 
 
 app.post('/saveLog', grass.saveLog);
+app.post('/saveActiveLog', grass.saveActiveLog);
 
 app.get('/logout', users.logout);
 app.get('/login', users.loginForm);
@@ -56,6 +58,10 @@ app.get('/sessions',
         users.restrict, 
         sessions.loadAll,
         sessions.showAll);
+app.get('/active', 
+        users.restrict,
+        actives.loadAll,
+        actives.showAll);
 
 
 http.createServer(app).listen(app.get('port'), function(){
