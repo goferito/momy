@@ -1,7 +1,6 @@
 
 SERVER="localhost:4532"
 POSTSESSIONURL="$SERVER/saveLog"
-POSTACTIVEURL="$SERVER/saveActiveLog"
 
 LOGFOLDER="/tmp" #make sure this foler really exists
 LOGFILE="$LOGFOLDER/sessionLog"
@@ -17,4 +16,4 @@ DEVICE="laptop"
 # it to the server
 CHECKTIME="900"
 # Number of milliseconds to consider that the user is idle
-IDLETIME="5000" 
+IDLETIME="800000" 
