@@ -1,6 +1,8 @@
 #!/bin/bash
 
 source ./conf;
+# Load setting from default installation path
+#source /usr/share/momy/conf
 
 function updateIdle {
     last=`tail -1 $ACTIVELOG | grep "DOWN"`;
@@ -42,7 +44,7 @@ function postLog {
     log=`cat $LOGFILE`;
     res=0;
     echo "Sending sessions log..."
-    res=`wget --post-data "user=$USER&device=$DEVICE&log=$log" -O - -q $POSTSESSIONURL`
+    res=`wget --post-data "user=$USER&device=$DEVICE&file=system&log=$log" -O - -q $POSTSESSIONURL`
     if [ "$res" != "BRAVO" ]; then
         echo "Error posting.";
         echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING SESSION LOG" >> $GRASSLOG;
@@ -60,8 +62,8 @@ function postActiveLog {
     log=`cat $ACTIVELOG`;
     res=0;
     echo "Sending active log..."
-    res=`wget --post-data "user=$USER&device=$DEVICE&log=$log" -O - -q $POSTACTIVEURL`
-    if [ "$res" != "BENNE" ]; then
+    res=`wget --post-data "user=$USER&device=$DEVICE&file=active&log=$log" -O - -q $POSTSESSIONURL`
+    if [ "$res" != "BRAVO" ]; then
         echo "Error posting.";
         echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING ACTIVE LOG" >> $GRASSLOG;
     else
@@ -69,7 +71,7 @@ function postActiveLog {
         echo -e $log
         #log should now be deleted, except for the two last lines
         cat $ACTIVELOG | tail -2 > "$LOGFOLDER/tmpActiveLog";
-        mv "$LOGFOLDER/tmpMomyLog" $ACTIVELOG
+        mv "$LOGFOLDER/tmpActiveLog" $ACTIVELOG
         echo "Active Log purged."
     fi
 }

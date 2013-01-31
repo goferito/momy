@@ -1,7 +1,28 @@
 var sessions = require('../model/session');
 
-exports.showAll = function(req, res){
-    res.locals.menu = 'sessions';
+var log = null;
+
+
+exports.loadSystem = function(req,res,next) {
+    loadSessions('system', req, res, next);
+};
+
+exports.loadActive = function(req, res, next){
+    loadSessions('active', req, res, next);
+};
+
+
+exports.showSystem = function(req, res){
+    res.locals.menu = 'system';
+    calculateTotals('system', req, res);
+};
+
+exports.showActive = function(req, res){
+    res.locals.menu = 'active';
+    calculateTotals('active', req, res);
+};
+
+function calculateTotals(log, req, res){
 
     var totalSecs = 0;
     var devices = [];
@@ -58,10 +79,10 @@ exports.showAll = function(req, res){
     res.locals.dayTotals = dayTotals;
 
     res.render('sessions');
-};
+}
 
-exports.loadAll = function(req,res,next) {
-    sessions.getAll(req.session.user, function(err, data){
+function loadSessions(log, req, res, next){
+    sessions.getAll(log, req.session.user, function(err, data){
         res.locals.sessions = !err ? data : {};
         next();
     });

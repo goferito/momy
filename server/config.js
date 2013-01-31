@@ -1,3 +1,3 @@
 exports.mongo = {
-    host: 'mongodb://localhost/test'
+    host: 'mongodb://localhost/momy'
 };

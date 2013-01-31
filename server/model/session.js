@@ -4,7 +4,8 @@ var SessionSchema = new mongoose.Schema({
                                             device: String,
                                             up: String,
                                             down: String,
-                                            ip: String
+                                            ip: String,
+                                            log: String
                                         });
 
 var Session = mongoose.model('Session', SessionSchema);
@@ -12,8 +13,8 @@ var Session = mongoose.model('Session', SessionSchema);
 exports.model = mongoose.model('Session');
 
 
-exports.getAll = function(user, callback) {
-    Session.find({user: user})
+exports.getAll = function(log, user, callback) {
+    Session.find({user: user, log: log})
             .sort('-up')
             .select('ip device up down')
             .exec(function(err, data){

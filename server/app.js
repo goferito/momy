@@ -7,7 +7,6 @@ var config = require('./config');
 
 var grass = require('./routes/grass');
 var sessions = require('./routes/sessions');
-var actives = require('./routes/actives');
 var users = require('./routes/users');
 
 var app = express();
@@ -23,8 +22,11 @@ app.configure(function(){
   app.use(express.cookieParser('very secret: blabla'));
   app.use(express.session({
       secret: 'very secret 2: blablabla',
+      cookie: {
+          maxAge: 999999
+      },
       store: new MongoStore({
-          db: 'test',
+          db: 'momy',
           collection: 'cookieSessions'})
   }));
   app.use(express.methodOverride());
@@ -54,14 +56,14 @@ app.post('/login', users.authenticate);
 /* Restricted to user */
 app.get('/', users.restrict, users.showDashboard);
 app.get('/dashboard', users.restrict, users.showDashboard);
-app.get('/sessions', 
+app.get('/system', 
         users.restrict, 
-        sessions.loadAll,
-        sessions.showAll);
+        sessions.loadSystem,
+        sessions.showSystem);
 app.get('/active', 
         users.restrict,
-        actives.loadAll,
-        actives.showAll);
+        sessions.loadActive,
+        sessions.showActive);
 
 
 http.createServer(app).listen(app.get('port'), function(){
