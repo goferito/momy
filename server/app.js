@@ -23,7 +23,7 @@ app.configure(function(){
   app.use(express.session({
       secret: 'very secret 2: blablabla',
       cookie: {
-          maxAge: 999999
+          maxAge: null
       },
       store: new MongoStore({
           db: 'momy',
