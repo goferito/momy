@@ -15,7 +15,7 @@ function updateIdle {
 
 function updateActiveLog {
     idle=`xprintidle`
-    if [ "$idle" -lt "$IDLETIME" ]
+    if [ -n "$idle" ] && [ "$idle" -lt "$IDLETIME" ]
     then
         if $isIdle
         then
@@ -87,8 +87,11 @@ if [ "$1" = "start" ];
 then
 	#Save the access in the log
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $LOGFILE;
-
+    isIdle=true
     export DISPLAY=:0.0
+    export XAUTHORITY=/home/$SUDOER/.Xauthority
+    #if no .Xauthority, get idle with this:
+    #sudo -u $SUDOER xprintidle 
 
     #Keep notifing the system is up every CHECKTIME
     while true

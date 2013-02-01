@@ -11,6 +11,8 @@ GRASSLOG="$LOGFOLDER/log"
 USER="picapiedra"
 # Name of the device with this client installed
 DEVICE="laptop"
+# Name of the user who's going to load the X
+SUDOER="goferito"
 
 # Number of seconds the client will wait until refress the log and send
 # it to the server
