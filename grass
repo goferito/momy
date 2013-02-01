@@ -74,22 +74,23 @@ fi
 
 if [ "$1" = "start" ];
 then
-	#Save the access in the log
-    echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $LOGFILE;
-    isIdle=true
+    isIdle=false
     export DISPLAY=:0.0
+    # if xauthority required, xauthority must exist:
     if [ -f /home/$SUDOER/.Xauthority ]; then
         export XAUTHORITY=/home/$SUDOER/.Xauthority
     fi
 
-    #Keep notifing the system is up every CHECKTIME
+    echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $LOGFILE;
+    echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $ACTIVELOG;
+
     while true
     do
+        sleep $CHECKTIME;
         lateDownTime;
         updateActiveLog;
         postLog;
         postActiveLog;
-        sleep $CHECKTIME;
     done
 fi
 
