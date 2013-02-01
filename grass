@@ -37,42 +37,31 @@ function lateDownTime {
         mv "$LOGFOLDER/tmpmomy" $LOGFILE;
     fi
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "DOWN" >> $LOGFILE;
-    echo "DownTime updated."
 }
 
 function postLog {
     log=`cat $LOGFILE`;
     res=0;
-    echo "Sending sessions log..."
     res=`wget --post-data "user=$USER&device=$DEVICE&file=system&log=$log" -O - -q $POSTSESSIONURL`
     if [ "$res" != "BRAVO" ]; then
-        echo "Error posting.";
         echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING SESSION LOG" >> $GRASSLOG;
     else
-        echo "Log sent:"
-        echo -e $log
         #log should now be deleted, except for the lines with current session.
         cat $LOGFILE | tail -2 > "$LOGFOLDER/tmpMomyLog";
         mv "$LOGFOLDER/tmpMomyLog" $LOGFILE
-        echo "Session Log purged."
     fi
 }
 
 function postActiveLog {
     log=`cat $ACTIVELOG`;
     res=0;
-    echo "Sending active log..."
     res=`wget --post-data "user=$USER&device=$DEVICE&file=active&log=$log" -O - -q $POSTSESSIONURL`
     if [ "$res" != "BRAVO" ]; then
-        echo "Error posting.";
         echo `date +[%Y-%m-%d\ %H:%M:%S]` "ERROR POSTING ACTIVE LOG" >> $GRASSLOG;
     else
-        echo "Log sent:"
-        echo -e $log
         #log should now be deleted, except for the two last lines
         cat $ACTIVELOG | tail -2 > "$LOGFOLDER/tmpActiveLog";
         mv "$LOGFOLDER/tmpActiveLog" $ACTIVELOG
-        echo "Active Log purged."
     fi
 }
 
@@ -89,14 +78,13 @@ then
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $LOGFILE;
     isIdle=true
     export DISPLAY=:0.0
-    export XAUTHORITY=/home/$SUDOER/.Xauthority
-    #if no .Xauthority, get idle with this:
-    #sudo -u $SUDOER xprintidle 
+    if [ -f /home/$SUDOER/.Xauthority ]; then
+        export XAUTHORITY=/home/$SUDOER/.Xauthority
+    fi
 
     #Keep notifing the system is up every CHECKTIME
     while true
     do
-        echo '------------------';
         lateDownTime;
         updateActiveLog;
         postLog;
