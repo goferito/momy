@@ -38,6 +38,7 @@ function calculateTotals(log, req, res){
     for(i in res.locals.sessions){
         session = res.locals.sessions[i];
 
+        if(!session.up || !session.down) continue;
         var up = new Date(session.up.substring(1,20));
         var down = new Date(session.down.substring(1,20));
         var weekDayUp = (up.getDay()+6)%7;  //+6%7 to make weeks start on monday
