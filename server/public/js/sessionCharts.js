@@ -64,9 +64,7 @@ dayTotals.map(function(day){
 });
 dayTotals = tmp;
 console.log('dayTotals:', dayTotals);
-var maxDay = Math.max(dayTotals);
 var weekDays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-console.log('maxDay:', maxDay);
 
 var labelsWidth = 65;
 var chart,
@@ -170,7 +168,7 @@ hotChart.selectAll("hours.name")
         .text(function(d){ return d; });
 
 hotChart.selectAll("dayName")
-        .data(hotData[0])
+        .data(weekDays)
         .enter()
         .append("rect")
         .attr("x", function(d,i){return hourWidth + i*(dayWidth+1);})
@@ -179,7 +177,7 @@ hotChart.selectAll("dayName")
         .attr("width", function(){return dayWidth;})
         .attr("fill", function(){return '#ddd';});
 hotChart.selectAll("text.dayName")
-        .data(hotData[0])
+        .data(weekDays)
         .enter()
         .append("text")
         .attr("x", function(d,i){return hourWidth + i*(dayWidth+1)+dayWidth/2;})
@@ -189,9 +187,9 @@ hotChart.selectAll("text.dayName")
         .attr("dy", ".36em")
         .text(function(d,i){ return weekDays[i]; });
 
-for(h in hotData[0]){
+for(h in hotData){
     hotChart.selectAll("rect"+h)
-        .data(hotData[0][h])
+        .data(hotData[h])
         .enter()
         .append("rect")
         .attr("y", function(d,i){ return headerHeight+1 + i*(timeHeight+1);})

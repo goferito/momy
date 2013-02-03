@@ -27,7 +27,23 @@ body{
     width: 18em;
 }
 
+.chart2{
+    margin: 5px;
+    font: 10px sans-serif;
+}
+.chart2 rect{
+    stroke: whiteSmoke;
+    fill: goldenrod;
+}
+.chart{
+  font: 10px sans-serif;
+}
+
 .nano{ }
 .nano .content{ padding: 10px; }
 .nano .pane{ background: #888; }
 .nano .slider{ background: #111; }
+
+.noDisplay{
+    display: none;
+}
