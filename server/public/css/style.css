@@ -27,6 +27,10 @@ body{
     width: 18em;
 }
 
+#hotTimes{
+    margin-left: 1em;
+}
+
 .chart2{
     margin: 5px;
     font: 10px sans-serif;

@@ -1,7 +1,20 @@
+
+function humanizeTime (secs) {
+  if(secs < 60) return secs+' secs.';
+  var min = Math.round((secs / 60), 0);
+  if(min < 60) return min + ' mins';
+  var hour = Math.round((min / 60), 0);
+  min = min % 60;
+  if(min == 0) return hour + ' hours';
+  return hour + ' hours, ' + min + ' mins';
+}
+
+var weekDays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+
 /* Pie chart */
-var w = 200,
-    h = 200,
-    r = 100,
+var w = h = 210,
+    r = w/2,
     color = d3.scale.category10();     //builtin range of colors
              
 var data = JSON.parse($("#devicesData").text());
@@ -45,17 +58,7 @@ arcs.append("svg:text")
     .text(function(d, i) { return data[i].label; });
 
 
-/* bar graph */
-
-function humanizeTime (secs) {
-  if(secs < 60) return secs+' secs.';
-  var min = Math.round((secs / 60), 0);
-  if(min < 60) return min + ' mins';
-  var hour = Math.round((min / 60), 0);
-  min = min % 60;
-  if(min == 0) return hour + ' hours';
-  return hour + ' hours, ' + min + ' mins';
-}
+/* Week totals graph */
 
 var dayTotals = $("#dayTotalsData").text().split(',');
 var tmp = [];
@@ -64,11 +67,10 @@ dayTotals.map(function(day){
 });
 dayTotals = tmp;
 console.log('dayTotals:', dayTotals);
-var weekDays = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-var labelsWidth = 65;
+var labelsWidth = 30;
 var chart,
-    width = 400,
+    width = 200,
     bar_height = 20,
     margins = 2,
     height = (bar_height+margins) * dayTotals.length;
@@ -76,9 +78,6 @@ var chart,
 var x = d3.scale.linear()
             .domain([0, d3.max(dayTotals)])
             .range([0, width - labelsWidth]);
-var y = d3.scale.ordinal()
-            .domain(dayTotals)
-            .rangeBands([0, height]);
 
 chart = d3.select("#dayTotals")
           .append('svg')
@@ -89,8 +88,8 @@ chart = d3.select("#dayTotals")
 chart.selectAll("rect")
     .data(dayTotals)
     .enter().append("rect")
-    .attr("y", y)
-    .attr("height", y.rangeBand())
+    .attr("y", function(d,i){ return i*(bar_height + margins); })
+    .attr("height", bar_height)
     .attr("x", function(){ return labelsWidth;})
     .transition()
     .duration(1000)
@@ -99,7 +98,7 @@ chart.selectAll("rect")
 chart.selectAll("text.day")
     .data(dayTotals).enter().append("text")
     .attr("x", function(d){ return labelsWidth - 5; })
-    .attr("y", function(d){ return y(d)+y.rangeBand()/2;})
+    .attr("y", function(d,i){ return i*(bar_height+margins) + bar_height/2;})
     .attr("dy", ".36em")
     .attr("text-anchor", "end")
     .attr('fill', 'dimgray')
@@ -114,7 +113,7 @@ chart.selectAll("text.time")
             return x(d) + labelsWidth + 5;
         else
             return x(d) + labelsWidth - 5;})
-    .attr("y", function(d){ return y(d)+y.rangeBand()/2;})
+    .attr("y", function(d,i){ return i*(bar_height+margins) + bar_height/2;})
     .attr("dy", ".36em")
     .attr("text-anchor", function(d){
         if(x(d) < 100)
@@ -127,13 +126,14 @@ chart.selectAll("text.time")
     .delay(600)
         .attr('opacity', 1);
 
+
 /* HOT TIMES */
-var dayWidth = 35;
-var hourWidth = 35;
+var dayWidth = 30;
+var hourWidth = 30;
 var timeHeight = 10;
 var headerHeight = 20;
 var width = (dayWidth+1)*7 + hourWidth+1;
-var height = 600;
+var height = 548;
 var color = function(d){
     var colours = [ '#c6dbef', 
                     '#9ecae1',
