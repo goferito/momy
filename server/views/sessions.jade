@@ -2,15 +2,16 @@ extends page
 block content
   h1 Session Statistics
   .row
-    #sessionList.pull-left.well
-      b Session List:
-      - each session in sessions
-        p
-          | #{session.device}@#{session.ip}
-          br/
-          | #{session.up}
-          br/
-          | #{session.down} (#{session.time})
+    #sessionList.pull-left.well.nano
+      .content
+        b Session List:
+        - each session in sessions
+          p
+            | #{session.device}@#{session.ip}
+            br/
+            | #{session.up}
+            br/
+            | #{session.down} (#{session.time})
 
     p#dayTotals.pull-right.well
        b Day totals: 
@@ -42,6 +43,10 @@ block content
       font: 10px sans-serif;
     }
 
+  script
+    $(document).ready(function(){
+      $("#sessionList").nanoScroller();
+    });
 
   script
 
@@ -170,8 +175,8 @@ block content
             .attr('opacity', 1);
 
     /* HOT TIMES */
-    var dayWidth = 70;
-    var hourWidth = 40;
+    var dayWidth = 60;
+    var hourWidth = 35;
     var timeHeight = 10;
     var headerHeight = 20;
     var width = (dayWidth+1)*7 + hourWidth+1;
@@ -246,4 +251,4 @@ block content
 
 
 
-
+  script(src='/js/jquery.nanoscroller.min.js')
