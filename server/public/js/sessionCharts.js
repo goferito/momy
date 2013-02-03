@@ -2,7 +2,7 @@
 var w = 200,
     h = 200,
     r = 100,
-    color = d3.scale.category20c();     //builtin range of colors
+    color = d3.scale.category10();     //builtin range of colors
              
 var data = JSON.parse($("#devicesData").text());
 console.log("devicesData:", data);
@@ -134,6 +134,15 @@ var timeHeight = 10;
 var headerHeight = 20;
 var width = (dayWidth+1)*7 + hourWidth+1;
 var height = 600;
+var color = function(d){
+    var colours = [ '#c6dbef', 
+                    '#9ecae1',
+                    '#6baed6',
+                    '#3182bd'];
+    var totalWeeks = 1;
+    //TODO: calculate totalWeeks correctly
+    return colours[Math.round((colours.length - 1) * d / totalWeeks)];
+}
 
 var hotData = JSON.parse($("#hotData").text());
 console.log('hotData:', hotData);
