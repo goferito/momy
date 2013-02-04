@@ -56,15 +56,14 @@ function calculateTotals(log, req, res){
 
         var timeUp = up.getHours()*2 + Math.round(up.getMinutes()/30);
         var timeDown = down.getHours()*2 + Math.round(down.getMinutes()/30);
-        for(var w = weekDayUp; w <= weekDayDown; w++){
-            if(w != weekDayUp) var h = 0;
-            else var h = timeUp;
-            while(h<48){
-                if(w == weekDayDown && h==timeDown)
-                    break;
-                else
-                    hotTimes[w][h]++;
-                h++;
+        var w = weekDayUp;
+        var h = timeUp;
+        while(w != weekDayDown || h != timeDown ){
+            hotTimes[w][h]++;
+            h++;
+            if(h==48){
+                h=0;
+                w=(w+1)%7
             }
         }
 
