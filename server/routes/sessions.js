@@ -15,12 +15,17 @@ exports.loadActive = function(req, res, next){
 exports.showSystem = function(req, res){
     res.locals.menu = 'system';
     calculateTotals('system', req, res);
+    res.render('sessions');
 };
 
 exports.showActive = function(req, res){
     res.locals.menu = 'active';
     calculateTotals('active', req, res);
+    res.render('sessions');
 };
+
+//TODO exports sendSystem / sendActive, and send the locals as json, as
+//     an ajax request/response.
 
 function calculateTotals(log, req, res){
 
@@ -61,7 +66,7 @@ function calculateTotals(log, req, res){
         while(w != weekDayDown || h != timeDown ){
             hotTimes[w][h]++;
             h++;
-            if(h==48){
+            if(h==48){//48 halfs of an hour
                 h=0;
                 w=(w+1)%7
             }
@@ -78,7 +83,6 @@ function calculateTotals(log, req, res){
     res.locals.totalSecs = humanizeTime(totalSecs);
     res.locals.dayTotals = dayTotals;
 
-    res.render('sessions');
 }
 
 function loadSessions(log, req, res, next){
