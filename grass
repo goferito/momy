@@ -75,11 +75,6 @@ fi
 if [ "$1" = "start" ];
 then
     isIdle=false
-    export DISPLAY=:0.0
-    # if xauthority required, xauthority must exist:
-    if [ -f /home/$SUDOER/.Xauthority ]; then
-        export XAUTHORITY=/home/$SUDOER/.Xauthority
-    fi
 
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $LOGFILE;
     echo `date +[%Y-%m-%d\ %H:%M:%S]` "UP" >> $ACTIVELOG;

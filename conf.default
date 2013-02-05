@@ -14,6 +14,12 @@ DEVICE="laptop"
 # Name of the user who's going to load the X
 SUDOER="goferito"
 
+export DISPLAY=:0.0
+# if xauthority required, xauthority must exist:
+if [ -f /home/$SUDOER/.Xauthority ]; then
+    export XAUTHORITY=/home/$SUDOER/.Xauthority
+fi
+
 # Number of seconds the client will wait until refress the log and send
 # it to the server
 CHECKTIME="900"
