@@ -1,5 +1,7 @@
 #Project Momy
 
+![Alt MomyShot](https://raw.github.com/wiki/goferito/momy/momyShot.jpg "User activity charts")
+
 Personal project aimed at trying to keep control of the amount of time I spend 
 in front of my computers.
 
