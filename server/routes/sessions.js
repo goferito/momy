@@ -59,8 +59,9 @@ function calculateTotals(log, req, res){
 
         res.locals.sessions[i].time = humanizeTime(sessionSecs);
 
-        var timeUp = up.getHours()*2 + Math.round(up.getMinutes()/30);
-        var timeDown = down.getHours()*2 + Math.round(down.getMinutes()/30);
+        //%48 sets time to 0 when it rounds to midnight
+        var timeUp = (up.getHours()*2 + Math.round(up.getMinutes()/30))%48;
+        var timeDown = (down.getHours()*2 + Math.round(down.getMinutes()/30))%48;
         var w = weekDayUp;
         var h = timeUp;
         while(w != weekDayDown || h != timeDown ){
