@@ -19,9 +19,9 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
-  app.use(express.cookieParser('very secret: blabla'));
+  app.use(express.cookieParser(config.cookieSecret));
   app.use(express.session({
-      secret: 'very secret 2: blablabla',
+      secret: config.sessionSecret,
       cookie: {
           maxAge: null
       },
