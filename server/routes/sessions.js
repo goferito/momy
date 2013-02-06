@@ -36,7 +36,7 @@ function calculateTotals(log, req, res){
     var hotTimes = [];
     for(var j=0;j<7;j++){
         hotTimes[j]=[];
-        for(var k=0; k<48; k++) //48 halfs of hours
+        for(var k=0; k<=48; k++) //48 halfs of hours
             hotTimes[j][k]=0;
     }
 
@@ -60,17 +60,18 @@ function calculateTotals(log, req, res){
         res.locals.sessions[i].time = humanizeTime(sessionSecs);
 
         //%48 sets time to 0 when it rounds to midnight
-        var timeUp = (up.getHours()*2 + Math.round(up.getMinutes()/30))%48;
-        var timeDown = (down.getHours()*2 + Math.round(down.getMinutes()/30))%48;
+        var timeUp = up.getHours()*2 + Math.round(up.getMinutes()/30);
+        var timeDown = down.getHours()*2 + Math.round(down.getMinutes()/30);
         var w = weekDayUp;
         var h = timeUp;
+        console.log(w, weekDayDown, h, timeDown);
         while(w != weekDayDown || h != timeDown ){
-            hotTimes[w][h]++;
-            h++;
             if(h==48){//48 halfs of an hour
                 h=0;
                 w=(w+1)%7
             }
+            hotTimes[w][h]++;
+            h++;
         }
 
     }
