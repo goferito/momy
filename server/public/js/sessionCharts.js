@@ -139,7 +139,7 @@ var color = function(d){
                     '#9ecae1',
                     '#6baed6',
                     '#3182bd'];
-    var totalWeeks = 1;
+    var totalWeeks = 4;
     //TODO: calculate totalWeeks correctly
     return colours[Math.round((colours.length - 1) * d / totalWeeks)];
 }
