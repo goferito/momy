@@ -20,9 +20,14 @@ chmod +x grass
 #move files to momy directory
 cp grass $MOMYDIR
 
-#set the process into the start up
-ln $MOMYDIR/grass /etc/init.d/grass
-update-rc.d grass defaults
+#Set up the upstart script
+sudo cp momy.conf /etc/init/
 
 #install tools
 apt-get -y install xprintidle
+
+#Set up scripts to start/stop momy when suspending
+sudo cp start_momy /etc/pm/power.d/
+sudo cp stop_momy /etc/pm/sleep.d/
+sudo chmod +x /etc/pm/power.d/momy
+sudo chmod +x /etc/pm/sleep.d/momy
