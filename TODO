@@ -1,6 +1,7 @@
 TODO:
 - DASHBOARD
   * % of time of my life I spend in front of computers
+  * % of time where im connecting from (deppending on IP, for example)
  
  - if i have 2 devices running... what?
 
@@ -15,3 +16,14 @@ TODO:
    * Gmail and facebook contact status.
 
  - Update.sh script, to get running easily the last version of the client.
+
+ - Client Config (Installer)
+   * Create the momy user with priviledges to only execute grass
+   * Apparmor profile for grass
+   * Use the upstart conf on installer
+
+ - Control via xmpp bot.
+
+BUGS:
+ - If the device turns on and then off before the first sleep finishes, there
+   is a SYSTEM UP on the logs, but not a SYSTEM DOWN.
