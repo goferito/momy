@@ -8,6 +8,7 @@ var config = require('./config');
 var grass = require('./routes/grass');
 var sessions = require('./routes/sessions');
 var users = require('./routes/users');
+var gt = require('./plugins/gtalker')
 
 var app = express();
 var db = mongoose.connect(config.mongo.host);

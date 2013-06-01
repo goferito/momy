@@ -64,8 +64,8 @@ function calculateTotals(log, req, res){
         var timeDown = down.getHours()*2 + Math.round(down.getMinutes()/30);
         var w = weekDayUp;
         var h = timeUp;
-        console.log(w, weekDayDown, h, timeDown);
-        while(w != weekDayDown || h <= timeDown ){
+        //console.log('new session', w, weekDayDown, h, timeDown)
+        while(w != weekDayDown || h < timeDown ){
             if(h==48){//48 halfs of an hour
                 h=0;
                 w=(w+1)%7

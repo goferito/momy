@@ -4,3 +4,5 @@ exports.mongo = {
 
 exports.cookieSecret = 'CookieSuperSecret';
 exports.sessionSecret = 'SessionSuperSecret';
+exports.gtid = 'your.user@gmail.com';
+exports.gtpass = 'your.password';
