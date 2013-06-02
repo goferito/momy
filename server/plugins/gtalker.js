@@ -15,33 +15,31 @@ xmpp.on('error', function(e){
 
 
 xmpp.on('stanza', function(stanza){
+/*
   console.log('@@@@ %s STANZA @@@', stanza.name.toUpperCase())
   console.log('From: ', stanza.attrs.from)
   console.log('To: ', stanza.attrs.to)
   if(stanza.attrs.type)
     console.log("Type: ", stanza.attrs.type)
+*/
   stanza.children.map(function(child){
     if(child.name == 'show'){
-      console.log('State: ',child.children[0])
       stanza.state = child.children[0]
     }
     if(child.name == 'caps:c'){
-      console.log('Node: ',child.attrs.node)
       stanza.node = child.attrs.node
-      console.log('Ver: ',child.attrs.ver)
       stanza.ver = child.attrs.ver
     }
   })
-
-console.log('SESS\n', sess)
 
   if(stanza.name != 'presence') return;
   if ((!stanza.state && !stanza.attrs.type) || stanza.state == 'dnd') {
     //new session
     if(sess[stanza.from]) return;
     var node = 'unknown'
-    if(stanza.node.indexOf('android') != -1) node = 'Android';
-    if(stanza.node.indexOf('mail.google.com')) node = 'Gmail'
+    if(stanza.node && stanza.node.indexOf('android') != -1) node = 'Android';
+    else 
+    if(stanza.node && stanza.node.indexOf('mail.google.com')) node = 'Gmail';
     var user = stanza.to.substring(0, stanza.to.indexOf('.momy@'))
     var gtalker = stanza.from.substring(0, stanza.from.indexOf('@'))
     sess[stanza.from] = { ip: 'Google',
@@ -51,16 +49,13 @@ console.log('SESS\n', sess)
                           down: null,
                           log: 'gtalker.'+gtalker
                         };
-    console.log('Registered opened gtalker session.')
   }
   if (stanza.attrs.type == 'unavailable' || stanza.state == 'away') {
     //finish session
-    console.log('gonna save')
     if(!sess[stanza.from]) return;
     sess[stanza.from].down = new Date().toFormat("[YYYY-MM-DD HH24:MI:SS]")
     var s = new Session(sess[stanza.from])
     s.save(function(err, ses){
-      console.log('Saving gtalker session...')
       sess[stanza.from] = null
       if(err) console.error(err)
     })
