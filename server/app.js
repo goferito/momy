@@ -65,6 +65,10 @@ app.get('/active',
         users.restrict,
         sessions.loadActive,
         sessions.showActive);
+app.get('/gtalker', 
+        users.restrict,
+        sessions.loadGtalker,
+        sessions.showGtalker);
 
 
 http.createServer(app).listen(app.get('port'), function(){

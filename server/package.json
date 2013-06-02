@@ -10,6 +10,7 @@
     "jade": "*",
     "connect-mongo": "0.2.0",
     "simple-xmpp": "*",
+    "date-utils": "*",
     "mongoose": "3.4.0"
   }
 }

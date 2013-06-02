@@ -11,6 +11,10 @@ exports.loadActive = function(req, res, next){
     loadSessions('active', req, res, next);
 };
 
+//TODO goferito should come from req.params
+exports.loadGtalker = function(req, res, next){
+    loadSessions('gtalker.goferito', req, res, next);
+};
 
 exports.showSystem = function(req, res){
     res.locals.menu = 'system';
@@ -23,6 +27,13 @@ exports.showActive = function(req, res){
     calculateTotals('active', req, res);
     res.render('sessions');
 };
+
+exports.showGtalker = function(req, res){
+    res.locals.menu = 'gtalker';
+    calculateTotals('gtalker.goferito', req, res);
+    res.render('sessions');
+};
+
 
 //TODO exports sendSystem / sendActive, and send the locals as json, as
 //     an ajax request/response.

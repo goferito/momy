@@ -27,3 +27,4 @@ TODO:
 BUGS:
  - If the device turns on and then off before the first sleep finishes, there
    is a SYSTEM UP on the logs, but not a SYSTEM DOWN.
+ - Server sessions expire.
