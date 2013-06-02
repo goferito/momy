@@ -4,9 +4,7 @@ exports.saveLog = function(req, res){
     var log = req.body.log.split("\n");
     var upTime = null;
     var downTime = null;
-    console.log("Session log ("+req.body.file+") length:"+log.length);
     log.forEach(function(line){
-        //console.log(line);
         var time = line.substring(0, 21);
         var info = line.substring(22);
 
@@ -26,18 +24,14 @@ exports.saveLog = function(req, res){
                     .where('log').equals(req.body.file)
                     .sort('up')
                     .exec(function(err, data){
-                        if(err)
-                            console.error(err);
+                        if(err) console.error(err);
                         else{
-                            console.log('--------session en cuestion:', session);
                             if(data.length > 0){
-                                console.log('Exists. Will be updated.');
                                 data[0].down = session.down;
                                 data[0].save(function(err){
                                     if(err) console.error("ERROR updating session.");
                                 });
                             }else{
-                                console.log('Doent exist. Will be saved.');
                                 session.save(function(err, ses){
                                     if(err) console.error(err);
                                 });
